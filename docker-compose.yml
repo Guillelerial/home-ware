@@ -1,0 +1,34 @@
+version: "3.5"
+
+services:
+  pvpc_service:
+    image: pvpc_service
+    hostname: pvpc-provider
+    container_name: home-ware-pvpc-service
+    networks:
+      - default
+    ports:
+      - "3010:8080"
+    expose:
+      - "3010"
+  node-red:
+#    image: nodered/node-red-docker:rpi
+    image: nodered/node-red:latest
+    hostname: orchestrator
+    container_name: home-ware-node-red
+    environment:
+      - TZ=Europe/Madrid
+    ports:
+      - "3080:1880"
+    expose:
+      - "3080"
+    networks:
+      - default
+    volumes:
+      - ./node-red/data:/data
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
